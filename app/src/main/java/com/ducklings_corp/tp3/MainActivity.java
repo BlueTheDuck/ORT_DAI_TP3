@@ -61,6 +61,6 @@ public class MainActivity extends Activity {
     }
 
     private void streamToJson(InputStreamReader streamReader) {
-        
+
     }
 }
