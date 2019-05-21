@@ -1,9 +1,13 @@
 package com.ducklings_corp.tp3;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.JsonReader;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,51 +20,23 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        URL api;
-        HttpURLConnection connection;
-        try {
-            api = new URL("http://epok.buenosaires.gob.ar/getCategorias");
-            connection = (HttpURLConnection) api.openConnection();
-        } catch (Exception e) {
-
-        }
     }
 
-    private class AsyncTaskJson extends AsyncTask<Void,Void,Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            URL url;
-            HttpURLConnection cnx;
-            try {
-                url = new URL("http://epok.buenosaires.gob.ar/getCategorias");
-                cnx = (HttpURLConnection) url.openConnection();
-                Log.d("AccesoAPI", "Cnx");
-                if (cnx.getResponseCode() == 200) {
-                    Log.d("AccesoAPI", "200 OK");
+    public void switchActivity(View view) {
+        int id;
+        Intent intent;
 
-                    InputStream body;
-                    InputStreamReader reader;
+        id = view.getId();
+        intent = null;
 
-                    body = cnx.getInputStream();
-                    reader = new InputStreamReader(body, "UTF-8");
-                    streamToJson(reader);
-                } else {
-                    Log.d("AccesoAPI", "Error en la conexión");
-                }
-                cnx.disconnect();
-            }catch (Exception error){
-                Log.d ("AccesoAPI","Hubo un error al conectarme:"+error.getMessage());
-            }
-            return null;
+        switch (id) {
+            case R.id.show_categories:
+                intent = new Intent(MainActivity.this,Categories.class);
+                break;
+            default:
+                Log.d("Activity","Unimplemented activity");
         }
-        protected Void onPostExecute(Void void) {
-            super.onPostExecute(void);
 
-        }
-    }
-
-    private void streamToJson(InputStreamReader streamReader) {
-
+        startActivity(intent);
     }
 }

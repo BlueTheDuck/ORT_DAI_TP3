@@ -7,15 +7,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Mostrar cateogrias"
-        android:onClick="showCategories"/>
+        android:onClick="switchActivity"
+        android:id="@+id/show_categories"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Buscar por nombre"
-        android:onClick="searchByName"/>
+        android:onClick="switchActivity"
+        android:id="@+id/search_by_name"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Buscar por lugar"
-        android:onClick="searchByPlace"/>
+        android:onClick="switchActivity"
+        android:id="@+id/search_by_place"/>
 </LinearLayout>
