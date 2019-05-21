@@ -1,11 +1,15 @@
 package com.ducklings_corp.tp3;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -26,7 +30,7 @@ public class Categories extends Activity {
 
 
         categories = new ArrayList<>();
-        categoriesAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,categories);
+        categoriesAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,categories);
 
         (new GetCategories()).execute();
 
@@ -66,12 +70,17 @@ public class Categories extends Activity {
             ListView listCategories;
             listCategories = findViewById(R.id.categories);
             listCategories.setAdapter(categoriesAdapter);
+            listCategories.setOnItemClickListener(onClickAdapterListener);
         }
     }
 
     private void streamToJson(InputStreamReader stream) {
-        JsonReader jsonReader = new JsonReader(stream);
-        int categoriesDownloaded = -1;
+        JsonReader jsonReader;
+        int categoriesDownloaded;
+
+        jsonReader = new JsonReader(stream);
+        categoriesDownloaded = -1;
+
         try {
             jsonReader.beginObject();
 
@@ -85,7 +94,9 @@ public class Categories extends Activity {
                 jsonReader.beginObject();
                 //Log.d("Json",jsonReader.nextName());
                 while (jsonReader.hasNext()) {
-                    if(jsonReader.nextName()=="nombre") {
+                    String name = jsonReader.nextName();
+                    Log.d("Json",name);
+                    if(name.compareTo("nombre")==0) {
                         categories.add(jsonReader.nextString());
                         Log.d("Json","Storing name");
                     } else {
@@ -101,4 +112,20 @@ public class Categories extends Activity {
             Log.d("Json stream reader",e.toString());
         }
     }
+
+    AdapterView.OnItemClickListener onClickAdapterListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int selected, long l) {
+            Bundle paquetovich;
+            Intent activity_Places;
+
+            paquetovich = new Bundle();
+            paquetovich.putString("selected", categories.get(selected));
+
+            activity_Places = new Intent(Categories.this, Places.class);
+            activity_Places.putExtras(paquetovich);
+
+            startActivity(activity_Places);
+        }
+    };
 }
