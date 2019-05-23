@@ -6,6 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,6 +25,7 @@ public class Places extends Activity {
     String place;
     String baseUrl = "http://epok.buenosaires.gob.ar/buscar/?texto=%s";
     ArrayList<String> names;
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +34,10 @@ public class Places extends Activity {
 
         place = this.getIntent().getExtras().getString("selected");
 
+        names = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,names);
 
+        (new GetPlaces()).execute();
     }
 
     private class GetPlaces extends AsyncTask<Void,Void,Void> {
@@ -51,18 +62,66 @@ public class Places extends Activity {
             }
             return null;
         }
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
+
+            ListView listPlaces;
+            listPlaces = findViewById(R.id.places_by_categories);
+            listPlaces.setAdapter(adapter);
+        }
     }
 
     private void streamToJson(InputStreamReader stream) {
         JsonReader jsonReader;
+        int totalFull;
 
         jsonReader = new JsonReader(stream);
         try {
             jsonReader.beginObject();
-            
+
+            jsonReader.nextName();//totalFull
+            totalFull = jsonReader.nextInt();
+            if(totalFull==0) {
+                noPlacesFound();
+                return;
+            }
+
+            jsonReader.nextName();//clasesEncontradas
+            jsonReader.skipValue();
+
+            jsonReader.nextName();//instancias
+
+            jsonReader.beginArray();
+            for(int i=0;i<totalFull;i++) {
+                jsonReader.beginObject();//one instance
+                jsonReader.nextName();//headline
+                jsonReader.skipValue();
+                jsonReader.nextName();//nombre
+                names.add(jsonReader.nextString());//<---
+                jsonReader.nextName();//claseId
+                jsonReader.skipValue();
+                jsonReader.nextName();//clase
+                jsonReader.skipValue();
+                jsonReader.nextName();//id
+                jsonReader.skipValue();
+                jsonReader.endObject();
+            }
+            jsonReader.endArray();
+
+            jsonReader.nextName();
+            jsonReader.skipValue();
+
             jsonReader.endObject();
         } catch (Exception e) {
-            Log.d("Json","Error parsing");
+            Log.d("Json","Error: "+e.getMessage());
         }
+    }
+    void noPlacesFound() {
+        TextView categoriesError;
+
+        categoriesError = findViewById(R.id.places_error);
+        categoriesError.setVisibility(View.VISIBLE);
+
+        Log.d("Json","No places found");
     }
 }

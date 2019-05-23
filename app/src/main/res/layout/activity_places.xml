@@ -1,4 +1,26 @@
-<LinearLayout android:layout_height="match_parent" android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lugares"
+        android:textSize="14pt"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:textColor="#D01010"
+        android:paddingHorizontal="15px"
+        android:text="0 lugares encontrados"
+        android:visibility="gone"
+        android:id="@+id/places_error"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/places_by_categories">
 
+    </ListView>
 </LinearLayout>
