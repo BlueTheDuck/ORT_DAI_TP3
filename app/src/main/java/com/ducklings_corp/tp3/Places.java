@@ -2,27 +2,22 @@ package com.ducklings_corp.tp3;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
 public class Places extends Activity {
-    String place;
+    String toSearch;
     String baseUrl = "http://epok.buenosaires.gob.ar/buscar/?texto=%s";
     ArrayList<String> names;
     ArrayAdapter<String> adapter;
@@ -32,11 +27,11 @@ public class Places extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places);
 
-        place = this.getIntent().getExtras().getString("selected");
+        toSearch = this.getIntent().getExtras().getString("selected");
 
         names = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,names);
-
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, names);
+        
         (new GetPlaces()).execute();
     }
 
@@ -46,7 +41,7 @@ public class Places extends Activity {
             URL url;
             HttpURLConnection cnx;
             try {
-                url = new URL(String.format(baseUrl,place));
+                url = new URL(String.format(baseUrl, toSearch));
                 cnx = (HttpURLConnection) url.openConnection();
                 Log.d("EPOK","Cnx");
                 if(cnx.getResponseCode()==200) {

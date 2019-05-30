@@ -33,6 +33,12 @@ public class MainActivity extends Activity {
             case R.id.show_categories:
                 intent = new Intent(MainActivity.this,Categories.class);
                 break;
+            case R.id.search_by_name:
+                intent = new Intent(MainActivity.this,GetName.class);
+                break;
+            case R.id.search_by_place:
+                intent = new Intent(MainActivity.this,GetLocation.class);
+                break;
             default:
                 Log.d("Activity","Unimplemented activity");
         }

@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".GetLocation"></activity>
+        <activity android:name=".GetName" />
         <activity android:name=".Categories" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -20,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Places"></activity>
+        <activity android:name=".Places" />
     </application>
 
 </manifest>
