@@ -1,6 +1,7 @@
 package com.ducklings_corp.tp3;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -16,7 +17,7 @@ public class GetLocation extends Activity {
     public void searchByPlace(View view) {
         EditText inputX, inputY;
         SeekBar inputRad;
-        Float coordX, coordY;
+        float coordX, coordY;
         int rad;
 
         inputX = findViewById(R.id.coord_x);
@@ -27,7 +28,21 @@ public class GetLocation extends Activity {
         coordY = Float.parseFloat(inputY.getText().toString());
         rad = inputRad.getProgress();
 
-        
+        goToList(coordX,coordY,rad);
     }
+    private void goToList(float coordX,float coordY, int rad) {
+        Bundle paquetovich;
+        Intent intent;
 
+        paquetovich = new Bundle();
+
+        paquetovich.putFloat("X",coordX);
+        paquetovich.putFloat("Y",coordY);
+        paquetovich.putInt("rad",rad);
+
+        intent = new Intent(GetLocation.this,PlacesByLocation.class);
+        intent.putExtras(paquetovich);
+
+        startActivity(intent);
+    }
 }
