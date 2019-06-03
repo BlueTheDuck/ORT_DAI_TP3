@@ -39,6 +39,7 @@ public class GetLocation extends Activity {
         paquetovich.putFloat("X",coordX);
         paquetovich.putFloat("Y",coordY);
         paquetovich.putInt("rad",rad);
+        paquetovich.putString("selected",getIntent().getExtras().getString("selected"));
 
         intent = new Intent(GetLocation.this,PlacesByLocation.class);
         intent.putExtras(paquetovich);

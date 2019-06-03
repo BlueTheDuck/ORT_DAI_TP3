@@ -19,7 +19,8 @@ import java.util.ArrayList;
 public class PlacesByLocation extends Activity {
     float coordX, coordY;
     int rad;
-    String baseUrl = "http://epok.buenosaires.gob.ar/reverseGeocoderLugares/?x=%s&y=%s&radio=%s&categorias=";
+    String selected;
+    String baseUrl = "https://epok.buenosaires.gob.ar/reverseGeocoderLugares/?x=%s&y=%s&radio=%s&categorias=%s";
     ArrayList<String> names;
     ArrayAdapter<String> adapter;
 
@@ -31,9 +32,10 @@ public class PlacesByLocation extends Activity {
         Bundle paqutovich;
         paqutovich = this.getIntent().getExtras();
 
-        coordX = paqutovich.getFloat("coordX");
-        coordY = paqutovich.getFloat("coordY");
+        coordX = paqutovich.getFloat("X");
+        coordY = paqutovich.getFloat("Y");
         rad = paqutovich.getInt("rad");
+        selected = paqutovich.getString("selected");
 
         names = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, names);
@@ -46,8 +48,9 @@ public class PlacesByLocation extends Activity {
         protected Void doInBackground(Void... voids) {
             URL url;
             HttpURLConnection cnx;
+            String fullUrl = String.format(baseUrl,coordX,coordY,rad,selected.toLowerCase());
             try {
-                url = new URL(String.format(baseUrl, coordX,coordY,rad));
+                url = new URL(fullUrl);
                 cnx = (HttpURLConnection) url.openConnection();
                 Log.d("EPOK","Cnx");
                 if(cnx.getResponseCode()==200) {
@@ -57,6 +60,9 @@ public class PlacesByLocation extends Activity {
                     body = cnx.getInputStream();
                     reader = new InputStreamReader(body,"UTF-8");
                     streamToJson(reader);
+                } else {
+                    Log.d("EPOK","Code: "+cnx.getResponseCode());
+                    throw new Exception(cnx.getResponseMessage());
                 }
             } catch (Exception e) {
                 Log.d("EPOK","Error: "+e.getMessage());

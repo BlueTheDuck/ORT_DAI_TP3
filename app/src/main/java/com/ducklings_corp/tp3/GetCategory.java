@@ -120,7 +120,7 @@ public class GetCategory extends Activity {
             paquetovich = new Bundle();
             paquetovich.putString("selected", categories.get(selected));
 
-            activity_Places = new Intent(GetCategory.this, PlacesByLocation.class);
+            activity_Places = new Intent(GetCategory.this, GetLocation.class);
             activity_Places.putExtras(paquetovich);
 
             startActivity(activity_Places);
