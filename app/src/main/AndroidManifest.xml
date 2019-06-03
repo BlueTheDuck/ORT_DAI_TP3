@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PlacesByLocation"></activity>
+        <activity android:name=".GetCategory"></activity>
+        <activity android:name=".PlacesByLocation" />
         <activity android:name=".GetLocation" />
         <activity android:name=".GetName" />
         <activity android:name=".Categories" />
